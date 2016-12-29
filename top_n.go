@@ -119,6 +119,10 @@ func buildHeap(numberScanner *bufio.Scanner, nFlag *uint) (*TopHeap, error) {
 
 // Selects largest N numbers by popping them off the heap.
 func takeTopN(topHeap *TopHeap, nFlag *uint) []int {
+	if topHeap.Len() == 0 {
+		return []int{}
+	}
+
 	selection := make([]int, 0)
 
 	for i := uint(0); i < *nFlag; i++ {
