@@ -18,7 +18,7 @@ package main
 // Example stdin usage:
 //		$ go build -o topn
 //		$ for i in {0..1000}; do echo $i; done | ./topn -n=15
-//      1000 999 998 997 996 995 994 993 992 991 990 989 988 987 986
+//		1000 999 998 997 996 995 994 993 992 991 990 989 988 987 986
 
 import (
 	"bufio"
