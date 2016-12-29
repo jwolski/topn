@@ -162,26 +162,32 @@ type TopHeap struct {
 	IntHeap
 }
 
+// Creates new TopHeap instance.
 func NewTopHeap(n uint) *TopHeap {
 	return &TopHeap{}
 }
 
+// Returns number of elements in heap.
 func (h IntHeap) Len() int {
 	return len(h)
 }
 
+// Compares heap elements.
 func (h IntHeap) Less(i, j int) bool {
 	return h[i] < h[j]
 }
 
+// Swaps elements within the heap.
 func (h IntHeap) Swap(i, j int) {
 	h[i], h[j] = h[j], h[i]
 }
 
+// Adds an element to the heap.
 func (h *IntHeap) Push(x interface{}) {
 	*h = append(*h, x.(int))
 }
 
+// Removes and returns the minimum element from the heap.
 func (h *IntHeap) Pop() interface{} {
 	old := *h
 	n := len(old)
@@ -190,6 +196,7 @@ func (h *IntHeap) Pop() interface{} {
 	return x
 }
 
+// Replaces the minimum element in the heap with the provided value
 func (h *TopHeap) ReplaceMin(value interface{}) {
 	heap.Pop(h)
 	heap.Push(h, value)
