@@ -12,17 +12,18 @@ package main
 // If any errors occur during execution, the program will exit with exit code 1.
 //
 // Example file usage:
-//		top_n -file=./data -n=15
+//		go build -o topn
+//		topn -file=./data -n=15
 //
 // Example stdin usage:
-//		top_n -n=15 < ./data
+//		go build -o topn
+//		topn -n=15 < ./data
 
 import (
 	"bufio"
 	"container/heap"
 	"flag"
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"strconv"
@@ -41,16 +42,30 @@ var errLogger = log.New(os.Stderr, "ERROR: ", log.Ltime)
 func main() {
 	fileFlag, nFlag := setupFlags()
 
-	numberScanner, err := setupScanner(fileFlag)
-	if err != nil {
-		errLogger.Fatalf("Failed to setup scanner - %s", err)
+	// Setup scanner - if file flag has not been provided
+	// read from stdin.
+	var numberScanner *bufio.Scanner
+
+	if *fileFlag == defaultFileName {
+		numberScanner = bufio.NewScanner(os.Stdin)
+	} else {
+		dataFile, err := os.Open(*fileFlag)
+		if err != nil {
+			errLogger.Fatalf("Failed to open file - %s", err)
+		}
+
+		defer dataFile.Close()
+		numberScanner = bufio.NewScanner(dataFile)
 	}
 
+	// Build min-heap from scanning list of numbers
 	numberHeap, err := buildHeap(numberScanner, nFlag)
 	if err != nil {
 		errLogger.Fatalf("Failed to scan numbers - %s", err)
 	}
 
+	// Take the top N integers from the heap and print
+	// them in descending order.
 	numbers := takeTopN(numberHeap, nFlag)
 	printNumbers(numbers)
 }
@@ -64,26 +79,6 @@ func setupFlags() (*string, *uint) {
 	flag.Parse()
 
 	return fileFlag, nFlag
-}
-
-// Sets up logger. Returns a *Logger.
-func setupLogger(out io.Writer, prefix string) *log.Logger {
-	return log.New(out, prefix, log.Ltime)
-}
-
-// Sets up number scanner. If file flag is specified, numbers will
-// be scanned from file. Otherwise, numbers will be scanned from stdin.
-func setupScanner(fileFlag *string) (*bufio.Scanner, error) {
-	if *fileFlag == defaultFileName {
-		return bufio.NewScanner(os.Stdin), nil
-	}
-
-	dataFile, err := os.Open(*fileFlag)
-	if err != nil {
-		return nil, err
-	}
-
-	return bufio.NewScanner(dataFile), nil
 }
 
 // PROGRAM ALGORITHM FUNCTIONS
@@ -155,6 +150,7 @@ func printNumbers(numbers []int) {
 }
 
 // SUPPORTING DATA STRUCTURE
+
 // This is a 'no frills' min-heap implementation. Most of this code was taken
 // from the min-heap example on http://golang.org. It suited my needs exactly.
 // I did add a couple of convenience functions like the constructor function
