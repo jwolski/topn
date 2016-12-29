@@ -9,6 +9,13 @@ package main
 // file option is not specified, the program defaults to reading from stdin.
 // If the n option is not specified, the program defaults to a small integer.
 //
+// The program uses a backing min-heap to store the highest N values while
+// scanning numbers. The heap is first filled with N elements, values that
+// are less than the minimum element in the initial heap are discarded, and
+// every scanned integer that is higher than the minimum element replaces
+// the minimum element in the heap. By the end of the scan, only the N largest
+// integers remain in the heap.
+//
 // If any errors occur during execution, the program will exit with exit code 1.
 //
 // Example file usage:
