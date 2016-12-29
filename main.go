@@ -31,6 +31,7 @@ package main
 import (
 	"bufio"
 	"container/heap"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -118,7 +119,8 @@ func buildHeap(numberScanner *bufio.Scanner, nFlag *uint) (*TopHeap, error) {
 
 		// If the value is less than the minimum, we don't need to
 		// add it to the heap. We only want the N-highest.
-		if value < topHeap.Minimum() {
+		minimum, err := topHeap.Minimum()
+		if err != nil || value < minimum {
 			continue
 		}
 
@@ -220,6 +222,10 @@ func (h *TopHeap) ReplaceMin(value interface{}) {
 }
 
 // Returns minimum element of the heap
-func (h *TopHeap) Minimum() int {
-	return h.IntHeap[0]
+func (h *TopHeap) Minimum() (int, error) {
+	if h.Len() == 0 {
+		return 0, errors.New("Heap is empty")
+	}
+
+	return h.IntHeap[0], nil
 }
