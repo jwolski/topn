@@ -21,6 +21,7 @@ package main
 // Example file usage:
 //		go build -o topn
 //		topn -file=./data -n=15
+//		1000 999 998 997 996 995 994 993 992 991 990 989 988 987 986
 //
 // Example stdin usage:
 //		$ go build -o topn
