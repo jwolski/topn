@@ -16,15 +16,9 @@ package main
 //		topn -file=./data -n=15
 //
 // Example stdin usage:
-//		go build -o topn
-//		topn -n=15 < ./data
-//
-// Example contents of data file:
-//		24557
-//		13225
-//		27592
-//		23095
-//		17253
+//		$ go build -o topn
+//		$ for i in {0..1000}; do echo $i; done | ./topn -n=15
+//      1000 999 998 997 996 995 994 993 992 991 990 989 988 987 986
 
 import (
 	"bufio"
