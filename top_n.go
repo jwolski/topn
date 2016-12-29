@@ -106,7 +106,7 @@ func buildHeap(numberScanner *bufio.Scanner, nFlag *uint) (*TopHeap, error) {
 
 		// If the value is less than the minimum, we don't need to
 		// add it to the heap. We only want the N-highest.
-		if value < topHeap.IntHeap[0] {
+		if value < topHeap.Minimum() {
 			continue
 		}
 
@@ -205,4 +205,9 @@ func (h *IntHeap) Pop() interface{} {
 func (h *TopHeap) ReplaceMin(value interface{}) {
 	heap.Pop(h)
 	heap.Push(h, value)
+}
+
+// Returns minimum element of the heap
+func (h *TopHeap) Minimum() int {
+	return h.IntHeap[0]
 }
