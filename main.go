@@ -98,6 +98,10 @@ func buildHeap(numberScanner *bufio.Scanner, nFlag *uint) (*TopHeap, error) {
 	topHeap := NewTopHeap(*nFlag)
 	heap.Init(topHeap)
 
+	if *nFlag == 0 {
+		return topHeap, nil
+	}
+
 	for numberScanner.Scan() {
 		// Skip lines that can't be converted to ints
 		value, err := strconv.Atoi(numberScanner.Text())
