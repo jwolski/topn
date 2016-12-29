@@ -18,6 +18,13 @@ package main
 // Example stdin usage:
 //		go build -o topn
 //		topn -n=15 < ./data
+//
+// Example contents of data file:
+//		24557
+//		13225
+//		27592
+//		23095
+//		17253
 
 import (
 	"bufio"
@@ -125,7 +132,7 @@ func takeTopN(topHeap *TopHeap, nFlag *uint) []int {
 
 	selection := make([]int, 0)
 
-	for i := uint(0); i < *nFlag; i++ {
+	for i := uint(0); i < *nFlag && topHeap.Len() > 0; i++ {
 		selection = append(selection, heap.Pop(topHeap).(int))
 	}
 
